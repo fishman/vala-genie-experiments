@@ -1,5 +1,3 @@
-find_package(Vala REQUIRED)
-find_package(PkgConfig)
 pkg_check_modules(DEPS REQUIRED purple)
 # pkg_check_modules(GTK REQUIRED gtk+-2.0)
 

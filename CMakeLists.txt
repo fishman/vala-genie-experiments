@@ -9,3 +9,5 @@ find_package(PkgConfig)
 
 add_subdirectory(curses)
 add_subdirectory(pidgin)
+add_subdirectory(builder)
+add_subdirectory(mysql)
