@@ -8,3 +8,4 @@ find_package(Vala REQUIRED)
 find_package(PkgConfig)
 
 add_subdirectory(curses)
+add_subdirectory(pidgin)
