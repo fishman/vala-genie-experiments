@@ -100,11 +100,7 @@ class HelloWindow: Object
 			/* get statusbar for later */
 			statusbar = builder.get_object("statusbar") as Statusbar
 
-			var listmodel = new ListStore (4, typeof (string), typeof (string),
-					typeof (string), typeof (string));
-
 			resultview = builder.get_object("resultview") as TreeView
-			resultview.model = listmodel
 
 
 
