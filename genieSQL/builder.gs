@@ -9,7 +9,7 @@ statusbar:  static Gtk.Statusbar
 
 
 class HelloWindow: Object
-	_window: Gtk.Window
+	prop window: Gtk.Window
 
 	def process_mysql_result (result: Result): bool
 		MyRow:        array of string
@@ -22,15 +22,28 @@ class HelloWindow: Object
 		for i = 0 to (fields.length-1)
 			column_types[i] = typeof(string)
 
+		/* I don't know if this is necessary or if the store model
+		 * will be deferenced automatically
+		 * on the first call model will be null
+		 */
 		var store = resultview.model as ListStore
-		store.clear()
+		if store != null do store.clear()
 
+		/* Lets create a new liststory with an array of column types
+		 */
 		store = new ListStore.newv(column_types)
 
+		/* TODO: we need to clear the columns otherwise old column
+		 * data will end up in the treeview if the new query has less
+		 * columns than the old one. is there a better way to
+		 * accomplish this?
+		 */
 		var columns = resultview.get_columns()
 		for column in columns
 			resultview.remove_column(column)
 
+		/* insert column titles
+		 */
 		i = 0
 		for field in fields
 			resultview.insert_column_with_attributes (-1,
@@ -40,6 +53,10 @@ class HelloWindow: Object
 
 		resultview.columns_changed()
 
+		/* fill data, for every column of a row at a time. is there a
+		 * better way to do this? maybe we could use set_valuesv to
+		 * only only one row at a time
+		 */
 		iter: TreeIter
 		var row_counter = 0
 		while  (MyRow = result.fetch_row()) != null && row_counter < 2000
@@ -87,9 +104,9 @@ class HelloWindow: Object
 			/* connect signals to this instance */
 			builder.connect_signals (this)
 			/* get builder window */
-			_window = builder.get_object ("window") as Gtk.Window
-			_window.show_all ()
-			_window.destroy.connect(Gtk.main_quit)
+			window = builder.get_object ("window") as Gtk.Window
+			window.show_all ()
+			window.destroy.connect(Gtk.main_quit)
 
 			/* enable syntax highlighting for the sourceview */
 			sourceview = (Gtk.SourceView)builder.get_object("sourceview")
